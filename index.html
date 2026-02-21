@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,6 @@
     <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Palmeiras_logo.svg/1200px-Palmeiras_logo.svg.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    ...
     
     <style>
         :root {
@@ -114,6 +114,7 @@
             cursor: pointer;
             font-size: 1.5rem;
             transition: 0.3s;
+            z-index: 10;
         }
         .carousel-control:hover { background: var(--gold); }
         .prev { left: 0; border-radius: 0 5px 5px 0; }
@@ -221,7 +222,7 @@
     </section>
 
     <section id="bolao">
-        <h2>Ranking dos Mitos</h2>
+        <h2>Campeões</h2>
         <div class="glass-card">
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <tr style="border-bottom: 2px solid var(--gold);">
@@ -229,8 +230,16 @@
                     <th>Palmeirense</th>
                     <th>Pontos</th>
                 </tr>
-                <tr><td style="padding: 10px;">🥇 1º</td><td>Luiz Palestra</td><td>150 pts</td></tr>
-                <tr style="color: var(--gold);"><td style="padding: 10px;">🥈 2º</td><td>Marcos "O Santo"</td><td>142 pts</td></tr>
+                <tr>
+                    <td style="padding: 15px 10px;">🥇 1º</td>
+                    <td><strong>Paulo Daniel</strong></td>
+                    <td>150 pts</td>
+                </tr>
+                <tr style="color: var(--gold);">
+                    <td style="padding: 15px 10px;">🥈 2º</td>
+                    <td><strong>André Luis</strong></td>
+                    <td>142 pts</td>
+                </tr>
             </table>
         </div>
     </section>
@@ -271,24 +280,20 @@
 </div>
 
 <script>
-    // --- NAVEGAÇÃO ---
     function nav(id) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
         document.getElementById(id).classList.add('active-section');
         if(id === 'quiz') startQuiz();
     }
 
-    // --- CARROSSEL ---
     let currentSlide = 0;
     function changeSlide(direction) {
         const inner = document.getElementById('carouselInner');
         currentSlide = (currentSlide + direction + 3) % 3;
         inner.style.transform = `translateX(-${currentSlide * (100/3)}%)`;
     }
-    // Auto play carrossel
     setInterval(() => changeSlide(1), 5000);
 
-    // --- QUIZ ---
     const questions = [
         { q: "Por que o Palestra Italia mudou de nome para Palmeiras em 1942?", options: ["Pressão política na 2ª Guerra Mundial", "Decisão de marketing", "Fusão com outro clube"], correct: 0 },
         { q: "Quem é o maior artilheiro da história do Palmeiras?", options: ["Ademir da Guia", "Evair", "Heitor"], correct: 2 },
@@ -343,10 +348,8 @@
         setTimeout(showQuestion, 2000);
     }
 
-    // --- SENHA ---
     function unlock() {
-        const pass = document.getElementById('pass').value;
-        if(pass === "1942") {
+        if(document.getElementById('pass').value === "1942") {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('secret-room').style.display = 'block';
         } else {
@@ -354,7 +357,6 @@
         }
     }
 
-    // --- MÚSICA ---
     let playing = false;
     const song = document.getElementById('audio');
     function toggleMusic() {
