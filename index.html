@@ -537,98 +537,98 @@ section.active-section {
 </div>
 
 <script>
+    // 1. Variáveis Globais (Declaradas apenas uma vez para não travar o site)
+    let currentSlide = 0;
+    let playing = false;
+    const totalSlides = 3;
+
+    // 2. Função de Navegação entre as abas
     function nav(id) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
-        document.getElementById(id).classList.add('active-section');
+        const target = document.getElementById(id);
+        if(target) {
+            target.classList.add('active-section');
+        }
         if(id === 'quiz') startQuiz();
     }
 
-    let currentSlide = 0;
+    // 3. Funções do Carrossel
     function changeSlide(direction) {
         const inner = document.getElementById('carouselInner');
-        currentSlide = (currentSlide + direction + 3) % 3;
-        inner.style.transform = `translateX(-${currentSlide * (100/3)}%)`;
-    }
-    setInterval(() => changeSlide(1), 5000);
-
-    let playing = false;
-    function toggleMusic() {
-        const song = document.getElementById('audio');
-        if(!playing) { song.play(); playing = true; } 
-        else { song.pause(); playing = false; }
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        const moveAmount = currentSlide * (100 / totalSlides);
+        inner.style.transform = `translateX(-${moveAmount}%)`;
     }
 
+    // Carrossel Automático (5 segundos)
+    setInterval(() => {
+        changeSlide(1);
+    }, 5000);
+
+    // 4. Controle da Música (YouTube API)
+    function toggleYoutubeMusic() {
+        const iframe = document.getElementById('video-hino');
+        const btn = document.getElementById('music-btn');
+        const status = document.getElementById('music-status');
+
+        if (!playing) {
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            playing = true;
+            btn.innerText = "⏸️";
+            status.innerText = "🎵 Hino On";
+            status.style.color = "var(--gold)";
+        } else {
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            playing = false;
+            btn.innerText = "▶️";
+            status.innerText = "🎵 Hino Off";
+            status.style.color = "white";
+        }
+    }
+
+    // 5. Função de Acesso Restrito
     function unlock() {
         if(document.getElementById('pass').value === "1942") {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('secret-room').style.display = 'block';
-        } else { alert("Senha incorreta!"); }
+        } else { 
+            alert("Senha incorreta!"); 
+        }
     }
 
+    // 6. Funções do Quiz
     const questions = [
         { q: "Qual o ano de fundação?", options: ["1910", "1912", "1914"], correct: 2 },
         { q: "Quem marcou o gol do Tri da América (2021)?", options: ["Deyverson", "Breno Lopes", "Veiga"], correct: 0 }
     ];
     let currentQ = 0;
-    function startQuiz() { currentQ = 0; showQuestion(); }
+
+    function startQuiz() { 
+        currentQ = 0; 
+        showQuestion(); 
+    }
+
     function showQuestion() {
         const q = questions[currentQ];
         const container = document.getElementById('quiz-container');
-        if(!q) { container.innerHTML = "<h3>Parabéns, Porco! Quiz finalizado.</h3>"; return; }
+        if(!q) { 
+            container.innerHTML = "<h3>Parabéns, Porco! Quiz finalizado.</h3>"; 
+            return; 
+        }
         document.getElementById('question-text').innerText = q.q;
         const opts = document.getElementById('options');
         opts.innerHTML = "";
         q.options.forEach((o, i) => {
             const b = document.createElement('button');
-            b.innerText = o; b.className = "player-tag";
-            b.onclick = () => { currentQ++; showQuestion(); };
+            b.innerText = o; 
+            b.className = "player-tag";
+            b.onclick = () => { 
+                currentQ++; 
+                showQuestion(); 
+            };
             opts.appendChild(b);
         });
     }
-
-    let playing = false;
-
-function toggleYoutubeMusic() {
-    const iframe = document.getElementById('video-hino');
-    const btn = document.getElementById('music-btn');
-    const status = document.getElementById('music-status');
-
-    if (!playing) {
-        // Envia o comando de Play para o Iframe do YouTube
-        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        playing = true;
-        btn.innerText = "⏸️";
-        status.innerText = "🎵 Hino On";
-        status.style.color = "var(--gold)";
-    } else {
-        // Envia o comando de Pause
-        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-        playing = false;
-        btn.innerText = "▶️";
-        status.innerText = "🎵 Hino Off";
-        status.style.color = "white";
-    }
-}
-    let currentSlide = 0; // Começa na primeira foto
-const totalSlides = 3; // Você tem 3 fotos
-
-function changeSlide(direction) {
-    const inner = document.getElementById('carouselInner');
-    
-    // Calcula qual slide deve mostrar
-    currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-    
-    // Move o carrossel para a esquerda ou direita
-    // 100 dividido por 3 fotos = 33.33% de movimento por vez
-    const moveAmount = currentSlide * (100 / totalSlides);
-    inner.style.transform = `translateX(-${moveAmount}%)`;
-}
-
-// Opcional: Faz as fotos passarem sozinhas a cada 5 segundos
-setInterval(() => {
-    changeSlide(1);
-}, 5000);
-    
 </script>
 
 </body>
