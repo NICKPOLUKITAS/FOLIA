@@ -66,7 +66,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- CARDS ESTILIZADOS --- */
         .glass-card {
             background: var(--glass);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -79,11 +78,46 @@
 
         h2 { font-family: 'Oswald', sans-serif; font-size: 2.5rem; margin-bottom: 20px; border-left: 8px solid var(--gold); padding-left: 15px; }
 
-        /* --- ESTILOS DO QUIZ --- */
-        .quiz-container { text-align: center; }
-        .score-board { font-size: 1.2rem; color: var(--gold); margin-bottom: 10px; font-weight: bold; }
-        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
-        
+        /* --- CARROSSEL --- */
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 2px solid var(--gold);
+        }
+        .carousel-inner {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: 0.3s;
+        }
+        .carousel-control:hover { background: var(--gold); }
+        .prev { left: 0; border-radius: 0 5px 5px 0; }
+        .next { right: 0; border-radius: 5px 0 0 5px; }
+
+        /* --- QUIZ --- */
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 20px; }
         .option-btn {
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--gold);
@@ -92,18 +126,14 @@
             border-radius: 8px;
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
             transition: 0.3s;
             text-align: left;
         }
         .option-btn:hover:not(:disabled) { background: var(--palmeiras-main); transform: translateX(5px); }
-        .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+        .correct { color: #00ff88; font-weight: bold; margin-top: 10px; }
+        .wrong { color: #ff4444; font-weight: bold; margin-top: 10px; }
 
-        .feedback { margin-top: 20px; font-weight: bold; font-size: 1.2rem; min-height: 1.6em; }
-        .correct { color: #00ff88; text-shadow: 0 0 10px rgba(0,255,136,0.5); }
-        .wrong { color: #ff4444; text-shadow: 0 0 10px rgba(255,68,68,0.5); }
-
-        /* --- OUTROS --- */
+        /* --- ELENCO --- */
         .grid-elenco { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
         .player-tag {
             background: var(--palmeiras-light);
@@ -111,12 +141,11 @@
             border-radius: 8px;
             text-align: center;
             font-weight: bold;
-            border: none;
-            color: white;
             transition: 0.3s;
         }
-        .player-tag:hover { transform: scale(1.05); background: var(--white); color: var(--palmeiras-main); cursor: pointer; }
+        .player-tag:hover { transform: scale(1.1); background: var(--white); color: var(--palmeiras-main); }
 
+        /* --- ÁREA SECRETA --- */
         .lock-input {
             background: transparent;
             border: 2px solid var(--gold);
@@ -126,9 +155,10 @@
             width: 200px;
             border-radius: 5px;
             margin-bottom: 10px;
+            outline: none;
         }
 
-        .music-player { position: fixed; bottom: 20px; right: 20px; background: var(--palmeiras-main); padding: 10px; border-radius: 50px; display: flex; align-items: center; border: 2px solid var(--gold); z-index: 1000; }
+        .music-player { position: fixed; bottom: 20px; right: 20px; background: var(--palmeiras-main); padding: 10px; border-radius: 50px; display: flex; align-items: center; border: 2px solid var(--gold); z-index: 1001; }
     </style>
 </head>
 <body>
@@ -150,16 +180,26 @@
 <div class="container">
     
     <section id="home" class="active-section">
+        <div class="carousel">
+            <div class="carousel-inner" id="carouselInner">
+                <div class="carousel-item" style="background-image: url('https://p2.trrsf.com/image/fget/cf/1200/675/middle/images.terra.com/2023/12/07/1169973219-campeao-brasileiro.jpg');"></div>
+                <div class="carousel-item" style="background-image: url('https://conteudo.imguol.com.br/c/esporte/01/2021/11/27/jogadores-do-palmeiras-comemoram-o-titulo-da-libertadores-1638054045543_v2_900x506.jpg');"></div>
+                <div class="carousel-item" style="background-image: url('https://www.palmeiras.com.br/wp-content/uploads/2024/04/53637184428_4e0f54620f_k.jpg');"></div>
+            </div>
+            <button class="carousel-control prev" onclick="changeSlide(-1)">❮</button>
+            <button class="carousel-control next" onclick="changeSlide(1)">❯</button>
+        </div>
+
         <div class="glass-card">
             <h2>AVANTI PALESTRA!</h2>
-            <p>Este é o portal oficial do nosso grupo de amigos. Aqui a corneta é liberada, mas o respeito ao Maior Campeão do Brasil é obrigatório.</p>
+            <p>Este é o portal oficial do nosso grupo de amigos. Aqui a corneta é liberada, mas o respeito ao Maior Campeão do Brasil é obrigatório. Participe do bolão e teste seus conhecimentos no Quiz.</p>
         </div>
     </section>
 
     <section id="historia">
         <div class="glass-card">
             <h2>Nossa Eterna Glória</h2>
-            <p>De 1914 para a eternidade. Nascemos Palestra, crescemos Palmeiras e morremos campeões.</p>
+            <p>De 1914 para a eternidade. Nascemos Palestra, crescemos Palmeiras e morremos campeões. O site homenageia as conquistas de 51, a era Parmalat e a Terceira Academia de Abel Ferreira.</p>
         </div>
     </section>
 
@@ -173,6 +213,7 @@
             <div class="player-tag">Raphael Veiga</div>
             <div class="player-tag">Estêvão</div>
             <div class="player-tag">Flaco López</div>
+            <div class="player-tag">Felipe Anderson</div>
         </div>
     </section>
 
@@ -181,12 +222,12 @@
         <div class="glass-card">
             <table style="width: 100%; border-collapse: collapse; text-align: left;">
                 <tr style="border-bottom: 2px solid var(--gold);">
-                    <th>Posição</th>
+                    <th style="padding: 10px;">Posição</th>
                     <th>Palmeirense</th>
                     <th>Pontos</th>
                 </tr>
-                <tr><td>🥇 1º</td><td>Luiz Palestra</td><td>150 pts</td></tr>
-                <tr style="color: var(--gold);"><td>🥈 2º</td><td>Marcos "O Santo"</td><td>142 pts</td></tr>
+                <tr><td style="padding: 10px;">🥇 1º</td><td>Luiz Palestra</td><td>150 pts</td></tr>
+                <tr style="color: var(--gold);"><td style="padding: 10px;">🥈 2º</td><td>Marcos "O Santo"</td><td>142 pts</td></tr>
             </table>
         </div>
     </section>
@@ -194,11 +235,10 @@
     <section id="quiz">
         <div class="glass-card">
             <h2>Desafio Alviverde</h2>
-            <div id="quiz-content" class="quiz-container">
-                <div id="question-number" class="score-board"></div>
-                <p id="question-text" style="font-size: 1.3rem; margin-bottom: 20px; min-height: 60px;"></p>
+            <div id="quiz-container">
+                <p id="question-text" style="font-size: 1.2rem; margin-bottom: 20px;"></p>
                 <div id="options" class="options-grid"></div>
-                <div id="feedback-msg" class="feedback"></div>
+                <p id="quiz-feedback"></p>
             </div>
         </div>
     </section>
@@ -206,13 +246,14 @@
     <section id="secret">
         <div class="glass-card" id="lock-screen">
             <h2>🚨 ACESSO RESTRITO</h2>
-            <p>Apenas membros da diretoria. Digite o ano da Arrancada Heroica:</p>
-            <input type="number" id="pass" class="lock-input" placeholder="Ex: 2000">
-            <button class="player-tag" onclick="unlock()">VALIDAR</button>
+            <p>Digite o ano da Arrancada Heroica:</p>
+            <input type="number" id="pass" class="lock-input" placeholder="Ano">
+            <button class="player-tag" style="border:none; cursor:pointer;" onclick="unlock()">VALIDAR</button>
         </div>
         <div id="secret-room" style="display:none; text-align: center;">
-            <h1 style="color: var(--gold); font-size: 3rem;">BEM-VINDO AO COFRE!</h1>
-            <p>Prints proibidos e táticas de bolão liberadas!</p>
+            <h1 style="color: var(--gold); font-size: 2.5rem;">BEM-VINDO AO COFRE!</h1>
+            <p>Prints proibidos e táticas para o bolão!</p>
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3V4M2ZpNHB4eG96eG96eG96eG96eG96eG96eG96eG96JmVwPXYxX2ludGVybmFsX2dpZl9ieV9iYyZjdD1n/l2SpUepuM4fXG6bHq/giphy.gif" width="250" style="margin-top:20px; border-radius:10px;">
         </div>
     </section>
 
@@ -223,7 +264,7 @@
     <audio id="audio" loop>
         <source src="hino.mp3" type="audio/mpeg">
     </audio>
-    <button onclick="toggleMusic()" id="music-btn" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">▶️</button>
+    <button onclick="toggleMusic()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">▶️</button>
 </div>
 
 <script>
@@ -231,122 +272,82 @@
     function nav(id) {
         document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
         document.getElementById(id).classList.add('active-section');
-        if(id === 'quiz') resetQuiz();
+        if(id === 'quiz') startQuiz();
     }
 
-    // --- LÓGICA DO QUIZ ---
-    const quizData = [
-        {
-            q: "Por que razão o Palestra Italia teve de mudar o seu nome para Palmeiras em 1942?",
-            options: ["Pressão política na 2ª Guerra Mundial", "Decisão de marketing da diretoria", "Fusão com o AA das Palmeiras", "Exigência da FIFA"],
-            correct: 0
-        },
-        {
-            q: "Quem é o maior marcador de gols (artilheiro) da história do Palmeiras?",
-            options: ["Ademir da Guia", "Evair", "Heitor", "Edmundo"],
-            correct: 2
-        },
-        {
-            q: "Contra que time o Palmeiras conquistou a sua primeira Libertadores?",
-            options: ["Boca Juniors", "River Plate", "Deportivo Cali", "Santos"],
-            correct: 2
-        },
-        {
-            q: "Em 1965, o Palmeiras representou a Seleção Brasileira contra que país?",
-            options: ["Argentina", "Uruguai", "Alemanha", "Itália"],
-            correct: 1
-        },
-        {
-            q: "Quem foi o capitão do Palmeiras na conquista da Libertadores de 1999?",
-            options: ["Marcos", "Alex", "César Sampaio", "Zinho"],
-            correct: 2
-        },
-        {
-            q: "Em que ano o Palmeiras inaugurou o seu novo estádio, o Allianz Parque?",
-            options: ["2012", "2013", "2014", "2015"],
-            correct: 2
-        }
+    // --- CARROSSEL ---
+    let currentSlide = 0;
+    function changeSlide(direction) {
+        const inner = document.getElementById('carouselInner');
+        currentSlide = (currentSlide + direction + 3) % 3;
+        inner.style.transform = `translateX(-${currentSlide * (100/3)}%)`;
+    }
+    // Auto play carrossel
+    setInterval(() => changeSlide(1), 5000);
+
+    // --- QUIZ ---
+    const questions = [
+        { q: "Por que o Palestra Italia mudou de nome para Palmeiras em 1942?", options: ["Pressão política na 2ª Guerra Mundial", "Decisão de marketing", "Fusão com outro clube"], correct: 0 },
+        { q: "Quem é o maior artilheiro da história do Palmeiras?", options: ["Ademir da Guia", "Evair", "Heitor"], correct: 2 },
+        { q: "Contra quem o Palmeiras ganhou a 1ª Libertadores?", options: ["River Plate", "Boca Juniors", "Deportivo Cali"], correct: 2 },
+        { q: "Em 1965, o Palmeiras representou a Seleção contra qual país?", options: ["Argentina", "Uruguai", "Alemanha"], correct: 1 },
+        { q: "Quem era o capitão na Libertadores de 1999?", options: ["Marcos", "César Sampaio", "Alex"], correct: 1 },
+        { q: "Em que ano inaugurou o Allianz Parque?", options: ["2014", "2012", "2015"], correct: 0 }
     ];
 
-    let currentQuestion = 0;
+    let currentQ = 0;
     let score = 0;
 
-    function loadQuestion() {
-        const feedbackMsg = document.getElementById('feedback-msg');
-        feedbackMsg.innerHTML = "";
+    function startQuiz() {
+        currentQ = 0;
+        score = 0;
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const feedback = document.getElementById('quiz-feedback');
+        feedback.innerHTML = "";
         
-        if (currentQuestion >= quizData.length) {
-            showResult();
+        if(currentQ >= questions.length) {
+            document.getElementById('quiz-container').innerHTML = `<h3>Fim! Você acertou ${score} de 6.</h3><button class="player-tag" onclick="nav('quiz')">Tentar de novo</button>`;
             return;
         }
 
-        const q = quizData[currentQuestion];
-        document.getElementById('question-number').innerText = `Pergunta ${currentQuestion + 1} de ${quizData.length}`;
+        const q = questions[currentQ];
         document.getElementById('question-text').innerText = q.q;
-        
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = "";
-        
-        q.options.forEach((opt, index) => {
+
+        q.options.forEach((opt, i) => {
             const btn = document.createElement('button');
-            btn.classList.add('option-btn');
+            btn.className = "option-btn";
             btn.innerText = opt;
-            btn.onclick = () => checkAnswer(index);
+            btn.onclick = () => checkAnswer(i);
             optionsDiv.appendChild(btn);
         });
     }
 
-    function checkAnswer(choice) {
-        const feedbackMsg = document.getElementById('feedback-msg');
-        const buttons = document.querySelectorAll('.option-btn');
-        
-        buttons.forEach(btn => btn.disabled = true);
-
-        if (choice === quizData[currentQuestion].correct) {
+    function checkAnswer(i) {
+        const feedback = document.getElementById('quiz-feedback');
+        if(i === questions[currentQ].correct) {
             score++;
-            feedbackMsg.innerHTML = "<span class='correct'>CERTO! 🐷⚽</span>";
+            feedback.innerHTML = "<p class='correct'>Acertou! 🐷</p>";
         } else {
-            const correta = quizData[currentQuestion].options[quizData[currentQuestion].correct];
-            feedbackMsg.innerHTML = `<span class='wrong'>ERROU! A correta era: ${correta}</span>`;
+            feedback.innerHTML = `<p class='wrong'>Errou! A certa era: ${questions[currentQ].options[questions[currentQ].correct]}</p>`;
         }
-
-        setTimeout(() => {
-            currentQuestion++;
-            loadQuestion();
-        }, 2000);
-    }
-
-    function showResult() {
-        const content = document.getElementById('quiz-content');
-        let msg = score === 6 ? "GÊNIO! Conhece tudo! 🏆" : score >= 4 ? "Boa! É palmeirense de verdade! 🟢" : "Precisa estudar a história do Verdão... 📚";
         
-        content.innerHTML = `
-            <h2 style="color: var(--gold); border: none; text-align: center;">Resultado Final</h2>
-            <div style="font-size: 3.5rem; margin: 20px 0;">${score} / 6</div>
-            <p style="margin-bottom: 30px;">${msg}</p>
-            <button class="player-tag" onclick="resetQuiz()" style="padding: 15px 40px; width: auto;">RECOMEÇAR</button>
-        `;
-    }
-
-    function resetQuiz() {
-        currentQuestion = 0;
-        score = 0;
-        document.getElementById('quiz-content').innerHTML = `
-            <div id="question-number" class="score-board"></div>
-            <p id="question-text" style="font-size: 1.3rem; margin-bottom: 20px; min-height: 60px;"></p>
-            <div id="options" class="options-grid"></div>
-            <div id="feedback-msg" class="feedback"></div>
-        `;
-        loadQuestion();
+        currentQ++;
+        setTimeout(showQuestion, 2000);
     }
 
     // --- SENHA ---
     function unlock() {
-        if(document.getElementById('pass').value === "1942") {
+        const pass = document.getElementById('pass').value;
+        if(pass === "1942") {
             document.getElementById('lock-screen').style.display = 'none';
             document.getElementById('secret-room').style.display = 'block';
         } else {
-            alert("Senha Incorreta!");
+            alert("Errou! Dica: Morreu Palestra, nasceu Palmeiras.");
         }
     }
 
@@ -354,13 +355,9 @@
     let playing = false;
     const song = document.getElementById('audio');
     function toggleMusic() {
-        const btn = document.getElementById('music-btn');
-        if(!playing) { song.play(); playing = true; btn.innerText = "⏸️"; } 
-        else { song.pause(); playing = false; btn.innerText = "▶️"; }
+        if(!playing) { song.play(); playing = true; } 
+        else { song.pause(); playing = false; }
     }
-
-    // Iniciar quiz
-    loadQuestion();
 </script>
 
 </body>
