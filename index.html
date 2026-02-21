@@ -609,6 +609,26 @@ function toggleYoutubeMusic() {
         status.style.color = "white";
     }
 }
+    let currentSlide = 0; // Começa na primeira foto
+const totalSlides = 3; // Você tem 3 fotos
+
+function changeSlide(direction) {
+    const inner = document.getElementById('carouselInner');
+    
+    // Calcula qual slide deve mostrar
+    currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+    
+    // Move o carrossel para a esquerda ou direita
+    // 100 dividido por 3 fotos = 33.33% de movimento por vez
+    const moveAmount = currentSlide * (100 / totalSlides);
+    inner.style.transform = `translateX(-${moveAmount}%)`;
+}
+
+// Opcional: Faz as fotos passarem sozinhas a cada 5 segundos
+setInterval(() => {
+    changeSlide(1);
+}, 5000);
+    
 </script>
 
 </body>
