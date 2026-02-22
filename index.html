@@ -28,12 +28,26 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #004d2c 0%, #002213 100%);
-            background-attachment: fixed;
-            color: var(--white);
-            overflow-x: hidden;
-        }
+    font-family: 'Poppins', sans-serif;
+    /* Ajustei para um verde profundo que permite ver o efeito de luz ao fundo */
+    background: radial-gradient(circle at center, #003d22 0%, #001a0d 100%);
+    background-attachment: fixed;
+    color: var(--white);
+    overflow-x: hidden;
+    position: relative;
+    margin: 0;
+}
+
+/* Este é o novo elemento que ficará no fundo */
+#interactiveCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+    pointer-events: none;
+}
 
         /* --- CABEÇALHO --- */
         header {
@@ -556,6 +570,8 @@ section.active-section {
 </head>
 <body>
 
+    <canvas id="interactiveCanvas"></canvas>
+
 <div id="particles-js" style="position: fixed; width: 100%; height: 100%; z-index: -1; top: 0; left: 0; pointer-events: none;"></div>    
     
 <header>
@@ -1008,7 +1024,77 @@ document.addEventListener('click', (e) => {
         { transform: `translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px) scale(0)`, opacity: 0 }
     ], { duration: 1000, easing: 'ease-out' }).onfinish = () => particle.remove();
 });
+
+    // --- COPIE DAQUI PARA O FUNDO INTERATIVO ---
+const canvas = document.getElementById('interactiveCanvas');
+const ctx = canvas.getContext('2d');
+let points = [];
+const mouse = { x: null, y: null, max: 150 }; // O mouse tem um raio de alcance maior
+
+window.addEventListener('mousemove', (e) => { 
+    mouse.x = e.x; 
+    mouse.y = e.y; 
+});
+
+function init() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    points = [];
+    for (let i = 0; i < 70; i++) { // Quantidade de pontos
+        points.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            xa: (Math.random() * 2 - 1) * 0.4,
+            ya: (Math.random() * 2 - 1) * 0.4,
+            max: 110 // Distância que as linhas se conectam
+        });
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const allPoints = [mouse].concat(points);
     
+    points.forEach(p => {
+        p.x += p.xa;
+        p.y += p.ya;
+        p.xa *= (p.x > canvas.width || p.x < 0) ? -1 : 1;
+        p.ya *= (p.y > canvas.height || p.y < 0) ? -1 : 1;
+        
+        ctx.fillStyle = 'rgba(197, 161, 74, 0.7)'; // Cor Ouro nos pontos
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let i = 0; i < allPoints.length; i++) {
+            const cur = allPoints[i];
+            if (p === cur || cur.x === null) continue;
+            
+            const xDiff = p.x - cur.x;
+            const yDiff = p.y - cur.y;
+            const dist = xDiff * xDiff + yDiff * yDiff;
+
+            if (dist < cur.max * cur.max) {
+                if (cur === mouse && dist > cur.max * cur.max / 2) {
+                    p.x -= xDiff * 0.02;
+                    p.y -= yDiff * 0.02;
+                }
+                ctx.strokeStyle = `rgba(197, 161, 74, ${1 - dist / (cur.max * cur.max)})`;
+                ctx.lineWidth = 0.6;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(cur.x, cur.y);
+                ctx.stroke();
+            }
+        }
+    });
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', init);
+init();
+animate();
+
 </script>
 </body>
 </html>
