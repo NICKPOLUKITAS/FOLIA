@@ -537,7 +537,7 @@ section.active-section {
 </div>
 
 <script>
-    // 1. Variáveis de Controle (Declaradas apenas uma vez)
+    // 1. Variáveis de Controle
     let currentSlide = 0;
     let playing = false;
     let currentQ = 0;
@@ -546,30 +546,23 @@ section.active-section {
 
     // 2. Função de Navegação (Menu)
     function nav(id) {
-        // Esconde todas as seções
         document.querySelectorAll('section').forEach(s => s.classList.remove('active-section'));
-        
-        // Mostra a seção desejada
         const target = document.getElementById(id);
         if(target) {
             target.classList.add('active-section');
         }
-
-        // Se entrar no quiz, reinicia ele
         if(id === 'quiz') startQuiz();
-        
-        window.scrollTo(0, 0); // Sobe a página ao trocar de aba
+        window.scrollTo(0, 0);
     }
 
     // 3. Funções do Carrossel
     function changeSlide(direction) {
         const inner = document.getElementById('carouselInner');
+        if(!inner) return;
         currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-        const moveAmount = currentSlide * (100 / totalSlides);
-        inner.style.transform = `translateX(-${moveAmount}%)`;
+        const moveAmount = currentSlide * 100;
+        inner.style.transform = `translateX(-${moveAmount / totalSlides}%)`;
     }
-
-    // Passa o carrossel sozinho a cada 5 segundos
     setInterval(() => changeSlide(1), 5000);
 
     // 4. Controle do Hino (YouTube)
@@ -577,7 +570,6 @@ section.active-section {
         const iframe = document.getElementById('video-hino');
         const btn = document.getElementById('music-btn');
         const status = document.getElementById('music-status');
-
         if (!playing) {
             iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
             playing = true;
@@ -604,38 +596,14 @@ section.active-section {
         }
     }
 
-    // 6. Configuração do Quiz (Perguntas e Lógica)
+    // 6. Lógica do Quiz
     const questions = [
-        { 
-            q: "Por que razão o Palestra Italia teve de mudar o seu nome para Palmeiras em 1942?", 
-            options: ["Pressão da torcida", "Devido à 2ª Guerra Mundial", "Decisão da diretoria"], 
-            correct: 1 
-        },
-        { 
-            q: "Quem é o maior marcador de gols (artilheiro) da história do Palmeiras?", 
-            options: ["Ademir da Guia", "Evair", "Heitor"], 
-            correct: 2 
-        },
-        { 
-            q: "Contra que time o Palmeiras conquistou a sua primeira Libertadores (1999)?", 
-            options: ["Deportivo Cali", "River Plate", "Boca Juniors"], 
-            correct: 0 
-        },
-        { 
-            q: "Em 1965, o Palmeiras representou a Seleção Brasileira contra que país?", 
-            options: ["Argentina", "Uruguai", "Alemanha"], 
-            correct: 1 
-        },
-        { 
-            q: "Quem foi o capitão do Palmeiras na conquista da primeira Libertadores em 1999?", 
-            options: ["César Sampaio", "Marcos", "Zinho"], 
-            correct: 0 
-        },
-        { 
-            q: "Em que ano o Palmeiras inaugurou o seu novo estádio, o Allianz Parque?", 
-            options: ["2012", "2013", "2014"], 
-            correct: 2 
-        }
+        { q: "Por que razão o Palestra Italia teve de mudar o seu nome para Palmeiras em 1942?", options: ["Pressão da torcida", "Devido à 2ª Guerra Mundial", "Decisão da diretoria"], correct: 1 },
+        { q: "Quem é o maior marcador de gols (artilheiro) da história do Palmeiras?", options: ["Ademir da Guia", "Evair", "Heitor"], correct: 2 },
+        { q: "Contra que time o Palmeiras conquistou a sua primeira Libertadores (1999)?", options: ["Deportivo Cali", "River Plate", "Boca Juniors"], correct: 0 },
+        { q: "Em 1965, o Palmeiras representou a Seleção Brasileira contra que país?", options: ["Argentina", "Uruguai", "Alemanha"], correct: 1 },
+        { q: "Quem foi o capitão do Palmeiras na conquista da primeira Libertadores em 1999?", options: ["César Sampaio", "Marcos", "Zinho"], correct: 0 },
+        { q: "Em que ano o Palmeiras inaugurou o seu novo estádio, o Allianz Parque?", options: ["2012", "2013", "2014"], correct: 2 }
     ];
 
     function startQuiz() { 
@@ -648,7 +616,6 @@ section.active-section {
         const container = document.getElementById('quiz-container');
         const q = questions[currentQ];
 
-        // Se não houver mais perguntas, mostra o resultado final
         if(!q) { 
             container.innerHTML = `
                 <div style="text-align:center">
@@ -658,6 +625,34 @@ section.active-section {
                 </div>`;
             return; 
         }
+
+        container.innerHTML = `
+            <p style="font-size: 1.2rem; margin-bottom: 20px; font-weight:bold;">${q.q}</p>
+            <div id="options" style="display: grid; gap: 10px;"></div>
+            <p style="margin-top:20px; font-size:0.8rem; opacity:0.6">Pergunta ${currentQ + 1} de ${questions.length}</p>
+        `;
+
+        const optsContainer = document.getElementById('options');
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.className = "player-tag";
+            btn.onclick = () => checkAnswer(i);
+            optsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(choice) {
+        if(choice === questions[currentQ].correct) {
+            alert("✅ ACERTOU!");
+            score++;
+        } else {
+            const respostaCerta = questions[currentQ].options[questions[currentQ].correct];
+            alert("❌ ERROU! A resposta certa era: " + respostaCerta);
+        }
+        currentQ++;
+        showQuestion();
+    }
 </script>
 </body>
 </html>
