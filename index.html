@@ -10,6 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
+
+        @keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    50% { opacity: 0.8; }
+    100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+}
         :root {
             --palmeiras-dark: #004d2c;
             --palmeiras-main: #006437;
@@ -44,8 +50,19 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
 
-        .logo { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: bold; letter-spacing: 2px; }
-        .logo span { color: var(--gold); }
+       
+.logo { 
+    font-family: 'Oswald', sans-serif; 
+    font-size: 2.2rem; 
+    font-weight: bold; 
+    letter-spacing: 3px;
+    background: linear-gradient(to bottom, #ffffff 20%, #c5a14a 50%, #8a6d29 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(197, 161, 74, 0.4));
+    text-transform: uppercase;
+}
+
 
         nav ul { display: flex; list-style: none; }
         nav ul li { margin-left: 25px; }
@@ -68,16 +85,24 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+.glass-card {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(197, 161, 74, 0.2); 
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(12px);
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
-        .glass-card {
-            background: var(--glass);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 30px;
-            backdrop-filter: blur(5px);
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
+.glass-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+    box-shadow: 0 15px 45px rgba(197, 161, 74, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+}
 
         h2 { font-family: 'Oswald', sans-serif; font-size: 2.5rem; margin-bottom: 20px; border-left: 8px solid var(--gold); padding-left: 15px; }
         h3 { font-family: 'Oswald', sans-serif; color: var(--gold); margin-bottom: 15px; text-transform: uppercase; }
@@ -184,7 +209,30 @@
         .rank-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
 
         /* --- OUTROS --- */
-        .player-tag { background: var(--palmeiras-light); padding: 10px 20px; border-radius: 8px; font-weight: bold; display: inline-block; margin: 5px; cursor: pointer; border:none; color: white; }
+/* DEPOIS (Cole este) */
+.player-tag { 
+    background: linear-gradient(45deg, var(--palmeiras-main), var(--palmeiras-light));
+    padding: 12px 25px; 
+    border-radius: 8px; 
+    font-weight: bold; 
+    display: inline-block; 
+    margin: 5px; 
+    cursor: pointer; 
+    border: 1px solid var(--gold); 
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.player-tag:hover { 
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--gold);
+    background: var(--gold);
+    color: var(--palmeiras-dark);
+}
+        
         .music-player { position: fixed; bottom: 20px; right: 20px; background: var(--palmeiras-main); padding: 10px; border-radius: 50px; display: flex; align-items: center; border: 2px solid var(--gold); z-index: 1001; }
 
         @media (max-width: 768px) {
@@ -379,6 +427,8 @@ section.active-section {
 </head>
 <body>
 
+<div id="particles-js" style="position: fixed; width: 100%; height: 100%; z-index: -1; top: 0; left: 0; pointer-events: none;"></div>    
+    
 <header>
     <div class="logo">PALESTRA<span>1914</span></div>
     <nav>
@@ -754,6 +804,26 @@ section.active-section {
         currentQ++;
         showQuestion();
     }
+
+    function createParticles() {
+    const container = document.getElementById('particles-js');
+    if(!container) return;
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.style.position = 'absolute';
+        p.style.width = '2px';
+        p.style.height = '2px';
+        p.style.background = Math.random() > 0.5 ? '#c5a14a' : '#00a859';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.borderRadius = '50%';
+        p.style.opacity = Math.random();
+        // Adicione a animação float no seu CSS para isso funcionar!
+        p.style.animation = `float ${Math.random() * 10 + 5}s linear infinite`;
+        container.appendChild(p);
+    }
+}
+createParticles();
 </script>
 </body>
 </html>
