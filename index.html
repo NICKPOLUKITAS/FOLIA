@@ -306,12 +306,12 @@ section.active-section {
     .rank-owner { text-align: left; }
 }
 
-/* --- ESTILO DO RODAPÉ --- */
+/* --- ESTILO DO RODAPÉ COM ÍCONE --- */
         footer {
-            background: rgba(0, 77, 44, 0.9);
+            background: rgba(0, 40, 20, 0.95);
             backdrop-filter: blur(10px);
             border-top: 3px solid var(--gold);
-            padding: 40px 5% 20px;
+            padding: 40px 5% 80px; 
             margin-top: 50px;
             text-align: center;
         }
@@ -319,51 +319,60 @@ section.active-section {
         .adms-container {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
             flex-wrap: wrap;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .adm-link {
             text-decoration: none;
-            color: var(--white);
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: 0.3s;
         }
 
-        .adm-link:hover {
-            color: var(--gold);
-            transform: translateY(-5px);
-        }
-
-        .insta-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            border-radius: 12px;
+        /* O círculo que envolve o ícone */
+        .insta-circle {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 8px;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            transition: 0.4s;
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        /* A imagem do Instagram dentro do círculo */
+        .insta-icon-img {
+            width: 30px; /* Tamanho do ícone dentro do círculo */
+            height: 30px;
+            filter: invert(1); /* Deixa o ícone branco para combinar com o site */
+            transition: 0.4s;
+        }
+
+        /* Efeito quando passa o mouse */
+        .adm-link:hover .insta-circle {
+            background: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        .adm-link:hover .insta-icon-img {
+            filter: invert(0); /* Volta a cor original (preto) no fundo dourado */
+            transform: rotate(360deg);
         }
 
         .adm-name {
             font-family: 'Oswald', sans-serif;
             font-size: 0.8rem;
             letter-spacing: 1px;
+            color: var(--white);
             text-transform: uppercase;
-        }
-
-        .copyright {
-            margin-top: 30px;
-            font-size: 0.75rem;
-            opacity: 0.6;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
         }
         
     </style>
@@ -582,31 +591,34 @@ section.active-section {
 </div>
 
     <footer>
-    <div class="footer-content">
-        <h3 style="border:none; padding:0; margin-bottom: 10px;">ADMINISTRAÇÃO</h3>
-        <p style="font-size: 0.9rem; opacity: 0.8;">Siga os responsáveis pela Fúria Alviverde no Instagram</p>
-        
-        <div class="adms-container">
-            <a href="https://www.instagram.com/jailson_santos.07/" class="adm-link">
-                <div class="insta-icon">📸</div>
-                <span class="adm-name">JAILSON</span>
-            </a>
+    <h3 style="border:none; padding:0; letter-spacing: 3px; margin-bottom: 10px;">ADMINISTRAÇÃO</h3>
+    <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 20px;">Siga os ADMs da Fúria</p>
+    
+    <div class="adms-container">
+        <a href="https://instagram.com/SEU_USER_1" target="_blank" class="adm-link">
+            <div class="insta-circle">
+                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" class="insta-icon-img">
+            </div>
+            <span class="adm-name">SEP DAY JAILSON</span>
+        </a>
 
-            <a href="https://www.instagram.com/sep_tatisx/" target="_blank" class="adm-link">
-                <div class="insta-icon">📸</div>
-                <span class="adm-name">SEP DAY</span>
-            </a>
+        <a href="https://instagram.com/SEU_USER_2" target="_blank" class="adm-link">
+            <div class="insta-circle">
+                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" class="insta-icon-img">
+            </div>
+            <span class="adm-name">ADRIANO SOUZA</span>
+        </a>
 
-            <a href="https://www.instagram.com/goalkeeper_souza12/" target="_blank" class="adm-link">
-                <div class="insta-icon">📸</div>
-                <span class="adm-name">ADRIANO</span>
-            </a>
-        </div>
+        <a href="https://instagram.com/SEU_USER_3" target="_blank" class="adm-link">
+            <div class="insta-circle">
+                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384031.png" class="insta-icon-img">
+            </div>
+            <span class="adm-name">ADM 03</span>
+        </a>
+    </div>
 
-        <div class="copyright">
-            <p>© 2021 - 2026 Fúria Alviverde. Todos os direitos reservados.</p>
-            <p>Sociedade Esportiva Palmeiras - O Campeão do Século.</p>
-        </div>
+    <div class="copyright" style="margin-top: 40px; opacity: 0.5; font-size: 0.7rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+        <p>© FÚRIA ALVIVERDE - O CAMPEÃO DO SÉCULO</p>
     </div>
 </footer>
     
