@@ -629,6 +629,7 @@ section.active-section {
             <div id="quiz-container">
                 <p id="question-text" style="font-size: 1.2rem; margin-bottom: 20px;"></p>
                 <div id="options" style="display: grid; gap: 10px;"></div>
+                <div id="quiz-feedback" style="margin-top: 20px; padding: 15px; border-radius: 8px; font-weight: bold; display: none;"></div>
             </div>
         </div>
     </section>
@@ -804,16 +805,33 @@ section.active-section {
     }
 
     function checkAnswer(choice) {
-        if(choice === questions[currentQ].correct) {
-            alert("✅ ACERTOU!");
-            score++;
-        } else {
-            const respostaCerta = questions[currentQ].options[questions[currentQ].correct];
-            alert("❌ ERROU! A resposta certa era: " + respostaCerta);
-        }
+    const feedback = document.getElementById('quiz-feedback');
+    const isCorrect = choice === questions[currentQ].correct;
+    
+    // Mostra a div de feedback
+    feedback.style.display = 'block';
+    
+    if(isCorrect) {
+        score++;
+        feedback.innerText = "✅ CRAVOU! Você conhece o Verdão!";
+        feedback.style.background = "rgba(0, 168, 89, 0.2)"; // Verde transparente
+        feedback.style.border = "1px solid #00a859";
+        feedback.style.color = "#00a859";
+    } else {
+        const certa = questions[currentQ].options[questions[currentQ].correct];
+        feedback.innerText = "❌ FUROU! A resposta certa era: " + certa;
+        feedback.style.background = "rgba(255, 0, 0, 0.1)"; // Vermelho transparente
+        feedback.style.border = "1px solid #ff4444";
+        feedback.style.color = "#ff4444";
+    }
+
+    // Espera 2 segundos para o usuário ler e passa para a próxima
+    setTimeout(() => {
+        feedback.style.display = 'none'; // Esconde o feedback
         currentQ++;
         showQuestion();
-    }
+    }, 2000);
+}
 
     function createParticles() {
     const container = document.getElementById('particles-js');
